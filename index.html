@@ -1,0 +1,64 @@
+<!-- 
+LOOMA 
+Filename: index.html
+Description: rendered by app.js (no need for user to run)
+	Sends the http POST request with user input (search query, length of how many searches)
+	Writes output to html webpage 
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+ 
+<body>
+    <form>
+        <div>
+            <label>Search</label>
+            <input type="text" id="user" /> <!-- Textbox for search query-->
+        </div>
+        <div> 
+            <label>Length of Search</label> <!-- Textbox for # of top searches-->
+            <input type="password" id="pass" />
+        </div>
+        <button id="but" type="submit">Submit</button> <!-- Button for submitting form -->
+    </form>
+
+    <p>Search Results:</p ><!-- Where search results are displayed -->
+    <p id="data"></p>
+ 
+    <script>
+        var dataBM; // Variable for top searches
+        document.getElementById("but").addEventListener('click', () => { // Listens for when user clicks submit
+            document.getElementById("data").innerHTML = ""; // Clears current search to prepare for next search
+        })
+        document.querySelector('button') // Takes in data from the button 
+            .addEventListener('click', (e) => { // Waits for user to click
+                e.preventDefault(); // Prevents the form from submitting 
+
+                const search = document // Takes in value from user
+                    .querySelector('#user').value;
+ 
+                const length = document // Takes in value from user
+                    .querySelector('#pass').value;
+                     
+                fetch('/http://10.159.26.69:2000/', { // Creates a POST request to localhost, ip:2000
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ // Sends the search query and # of top searches 
+                        search,
+                        length,
+                    }),
+                }).then(res => res.json()).then(json => dataBM = json).then(() =>  // Uses .then to wait for the promise to return, converts to JSON after
+                    {
+
+                        for(let i = 0; i < dataBM.dataBM.length; i++){ // Loops through each of the top searches 
+                            document.getElementById("data").innerHTML += (i+1) + ".) " + dataBM.dataBM[i].dn + "<br>" // Adds to innerHtml text to be displayed on html page
+                        }
+
+                    });
+            });
+    </script>
+</body>
+ 
+</html>
