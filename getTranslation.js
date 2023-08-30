@@ -12,7 +12,7 @@ const axios = require("axios");
 }
  */
 async function getTranslation(word){
-    let apikey = "AIzaSyCvNeqrsx8rafC15a5p0-d96Is--75kWU0"; // from RAPIDapi.com 2022 09 07
+    let apikey = ""; // from RAPIDapi.com 2022 09 07
     const res = await axios.get('https://www.googleapis.com/language/translate/v2?key=' + apikey + '&source=en&target=ne&q=' + word).then(result => {
         return result.data // Returns translation
     }).catch(error => {
